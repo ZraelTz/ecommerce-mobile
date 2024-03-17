@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "291777508856",
+    "project_id": "ecommercex-a6db8",
+    "storage_bucket": "ecommercex-a6db8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:291777508856:android:8b61ffd6cfefd545ad920d",
+        "android_client_info": {
+          "package_name": "com.company.commercex"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3HNjTFUcx0okqq0ioRAviGVyEp7myP7Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
