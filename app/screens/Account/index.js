@@ -39,8 +39,8 @@ export default function index({navigation}) {
         <View style={{paddingVertical:scale(20), flexDirection:'row', justifyContent:'flex-start', alignItems:'center'}}>
             <AvatarImage  size={scale(110)}/>
             <View style={{marginLeft:scale(20)}}> 
-                <Label text="Amusoftech" style={{fontSize:scale(28)}} />
-                <Label text="amusoftech@gmail.com" style={{fontSize:scale(12)}} />
+                <Label text="User" style={{fontSize:scale(28)}} />
+                <Label text="user@gmail.com" style={{fontSize:scale(12)}} />
             </View>
         </View>
       <FlatList

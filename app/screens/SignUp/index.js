@@ -1,36 +1,58 @@
-import React, {useState} from 'react';
-import {View, Text, Pressable} from 'react-native';
-import {scale} from 'react-native-size-matters';
+import React, { useState } from 'react';
+import { View, Text, Pressable } from 'react-native';
+import { scale } from 'react-native-size-matters';
 import Container from '../../components/Container';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import Label from '../../components/Label';
-import {appColors, shadow} from '../../utils/appColors';
+import { appColors, shadow } from '../../utils/appColors';
 import Feather from 'react-native-vector-icons/Feather';
 import auth from '@react-native-firebase/auth';
- import {AlertHelper} from '../../utils/AlertHelper'
-export default function index({navigation}) {
+import { AlertHelper } from '../../utils/AlertHelper'
+import axios from 'axios';
+import { BASE_URL } from '../../utils/ApiList';
+
+export default function index({ navigation }) {
   const [userInfo, setUserInfo] = useState({});
-  const onChnage = (name, text) => {
-    setUserInfo({...userInfo, [name]: text});
+  const onChange = (name, text) => {
+    setUserInfo({ ...userInfo, [name]: text });
   };
 
-  const onSignUp =async () => {
-    const {email,password}=userInfo
-    const user = await auth().createUserWithEmailAndPassword(email,password)
-    if(user?.user.uid){
-      AlertHelper.show("success", "Signup Successful")
-      navigation.navigate("Home")
-    }else{
-      AlertHelper.show("error", "Signup Failed, Please Retry")
-    } 
+  const onSignUp = async () => {
+    const { email, password, name, phone } = userInfo;
+    try {
+      const firebaseUser = await auth().createUserWithEmailAndPassword(email, password);
+      if (firebaseUser.user.uid) {
+        // Call the register endpoint with the user info
+        const response = await axios.post(`${BASE_URL}auth/register`, {
+          username: name,
+          email,
+          phone,
+          password_confirmation: password,
+          password
+        });
 
+        if (response.status === 201) {
+          AlertHelper.alert('Signup Successful', 'You have been registered.');
+          navigation.navigate('Home');
+        } else {
+          throw new Error('Failed to register user on the server');
+        }
+      }
+    } catch (error) {
+      Alert.alert('Signup Failed', 'Please Retry');
+      // If the Firebase user was created but the register endpoint failed, delete the Firebase user
+      if (firebaseUser?.user?.uid) {
+        await auth().currentUser.delete();
+      }
+    }
   };
+
   return (
     <Container isScrollable>
       <Pressable
         onPress={() => navigation.goBack()}
-        style={{marginTop: scale(30)}}>
+        style={{ marginTop: scale(30) }}>
         <Feather name={'chevron-left'} size={scale(25)} />
       </Pressable>
       <View
@@ -49,10 +71,10 @@ export default function index({navigation}) {
           }}>
           <Label
             text="Sign Up"
-            style={{fontSize: scale(30), fontWeight: '700'}}
+            style={{ fontSize: scale(30), fontWeight: '700' }}
           />
         </View>
-        <View style={{paddingVertical: scale(15)}}>
+        <View style={{ paddingVertical: scale(15) }}>
           <Label
             text="Sign in to Continue"
             style={{
@@ -62,24 +84,32 @@ export default function index({navigation}) {
             }}
           />
         </View>
-        <View style={{paddingVertical: scale(10)}}>
+        <View style={{ paddingVertical: scale(10) }}>
           <CustomInput
-            onChangeText={(text) => onChnage('name', text)}
-            label="Name"
-            placeholder="Amusoftech"
+            onChangeText={(text) => onChange('name', text)}
+            label="Username"
+            placeholder="johndoe"
           />
         </View>
-        <View style={{paddingVertical: scale(10)}}>
+        <View style={{ paddingVertical: scale(10) }}>
           <CustomInput
-            onChangeText={(text) => onChnage('email', text)}
+            onChangeText={(text) => onChange('email', text)}
             keyboardType="email-address"
             label="Email"
             placeholder="john@doe.com"
           />
         </View>
-        <View style={{paddingVertical: scale(10)}}>
+        <View style={{ paddingVertical: scale(10) }}>
           <CustomInput
-            onChangeText={(text) => onChnage('password', text)}
+            onChangeText={(text) => onChange('phone', text)}
+            keyboardType="phone"
+            label="Phone"
+            placeholder="2349072910943"
+          />
+        </View>
+        <View style={{ paddingVertical: scale(10) }}>
+          <CustomInput
+            onChangeText={(text) => onChange('password', text)}
             secureTextEntry
             label="Password"
             placeholder="Password"

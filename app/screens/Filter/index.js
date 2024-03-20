@@ -18,7 +18,7 @@ export default function index({navigation}) {
                 <TitleComp subLabel="No Settings" heading="Popularity" renderRight={()=> <Feather name="chevron-down" size={scale(20)}  />} />
              </View>
              <View style={{paddingVertical:scale(20)}}>
-                <TitleComp subLabel="Amusoftech, Apple, Mi" heading="Brands" renderRight={()=> <Feather name="chevron-down" size={scale(20)}  />} />
+                <TitleComp subLabel="Apple, Mi" heading="Brands" renderRight={()=> <Feather name="chevron-down" size={scale(20)}  />} />
              </View>
 
              <View style={{paddingVertical:scale(20)}}>

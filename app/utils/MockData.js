@@ -19,6 +19,7 @@ export const starterIntro = [
   'Getting started on a new app just takes too long. Most apps need the same basic building blocks and developer infrastructure, and we are bored of reinventing the wheel time and time again.',
   'This Starter Kit reflects the best practices of React Native development we have discovered while building real-world applications for our customers. It is opinionated about tooling, patterns and development practices. It might not be a one-size-fits-all solution for everyone, but feel free to customize it for your needs, or just take inspiration from it.',
 ];
+
 export const bestSellersList = [
   {
     name: 'BeoPlay Speaker',
@@ -72,28 +73,54 @@ export const reviews = [
   },
 ];
 
-export const categoriesList = [
-  {
-    label: 'Men',
-    Icon: () => <IconMen fill={appColors.primary} />,
-  },
-  {
-    label: 'Women',
-    Icon: () => <IconWomen fill={appColors.primary} />,
-  },
-  {
-    label: 'Devices',
-    Icon: () => <IconDevices fill={appColors.primary} />,
-  },
-  {
-    label: 'Gaming',
-    Icon: () => <IconGaming fill={appColors.primary} />,
-  },
-  {
-    label: 'Gadget',
-    Icon: () => <IconGadget fill={appColors.primary} />,
-  },
-];
+// Array of icons for shuffling
+const icons = [IconMen, IconWomen, IconDevices, IconGaming, IconGadget];
+
+export const categoriesList = () => {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get('/api/v1/categories/all');
+        if (response.data.length > 0) {
+          // Shuffle icons
+          const shuffledIcons = icons.sort(() => 0.5 - Math.random());
+
+          // Map the response to the categories format
+          const fetchedCategories = response.data.map((category, index) => ({
+            label: category.category_name,
+            Icon: shuffledIcons[index % shuffledIcons.length],
+          }));
+
+          setCategories(fetchedCategories);
+        } else {
+          // Fallback to dummy data if no data is returned
+          setCategories([
+            { label: 'Men', Icon: IconMen },
+            { label: 'Women', Icon: IconWomen },
+            { label: 'Devices', Icon: IconDevices },
+            { label: 'Gaming', Icon: IconGaming },
+            { label: 'Gadget', Icon: IconGadget },
+          ]);
+        }
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+        // Fallback to dummy data in case of an error
+        setCategories([
+          { label: 'Men', Icon: IconMen },
+          { label: 'Women', Icon: IconWomen },
+          { label: 'Devices', Icon: IconDevices },
+          { label: 'Gaming', Icon: IconGaming },
+          { label: 'Gadget', Icon: IconGadget },
+        ]);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+}
+
 export const topBrands = [
   {
     label: 'Apple Inc',
@@ -107,7 +134,6 @@ export const topBrands = [
   },
 ];
 export const recentSearches = [
-  'Amusoftech',
   'Shoes',
   'Caps',
   'Apple',

@@ -3,15 +3,11 @@ import {View, Text, StyleSheet, ImageBackground, Pressable} from 'react-native';
 import {scale} from 'react-native-size-matters';
 import Container from '../../components/Container';
 import Label from '../../components/Label';
-import CustomButton from '../../components/CustomButton';
 import {appColors} from '../../utils/appColors';
 import Feather from 'react-native-vector-icons/Feather';
 import TitleComp from '../../components/TitleComp';
-import {productDetail} from '../../utils/MockData';
 import ReviewComp from '../../components/ReviewComp';
 import BottomButtons from '../../components/BottomButtons';
-import {connect} from 'react-redux';
-import {addToCart} from '../../redux/cartAction';
 import ReduxWrapper from '../../utils/ReduxWrapper';
 
 function index({wishList:{wishItemNames}, cart:{ cartItems },addToWishList$,addToCart$, navigation,route:{params}}) {
